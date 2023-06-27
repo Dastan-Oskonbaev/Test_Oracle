@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.mail import send_mail
+from django.contrib import messages
 
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -67,7 +68,7 @@ def student_create(request):
             send_mail(
                 'Вы создали нового ученика',
                 'Поздравляем, вы добавлены в базу данных школы!',
-                'dastiw1910@gmail.com',
+                'example@gmail.com',
                 [student.email],
                 fail_silently=False,
             )
@@ -98,3 +99,32 @@ def student_delete(request, pk):
         return redirect('index')
     return render(request, 'school/school.html', {'student': student})
 
+
+@login_required
+def student_search(request):
+    query = request.GET.get('query')
+    students = Student.objects.filter(full_name__icontains=query)
+    print(students)
+    return render(request, 'school/student_search.html', {'students': students})
+
+
+@login_required
+def send_email_to_students(request):
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        students = Student.objects.all()
+
+        for student in students:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email='dastiw1910@gmai.com',
+                recipient_list=[student.email],
+                fail_silently=False
+            )
+
+        messages.success(request, 'Сообщение успешно отправлено ученикам.')
+        return redirect('send_email')
+
+    return render(request, 'send_email.html')

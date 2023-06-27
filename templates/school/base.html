@@ -3,7 +3,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -13,6 +12,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+     <link href="{% static 'vendor/css/send-email.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     {% block css %} {% endblock %}
@@ -35,19 +35,21 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'school' %}">Список учеников</a>
                         </li>
-                        {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'student_create' %}">Добавить ученика</a>
                         </li>
-                        {% endif %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'index' %}">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                             <form method="GET" action="{% url 'student_search' %}">
+        <input type="text" name="query" placeholder="Введите ФИО ученика" required>
+        <button type="submit">Поиск</button>
+    </form>
                         </li>
                     </ul>
                 </li>
                 {% if user.is_authenticated %}
-                    <form class="d-flex">
-                    </form>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
