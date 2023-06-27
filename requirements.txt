@@ -5,3 +5,4 @@ psycopg2-binary==2.9.6
 django-phonenumber-field==7.1.0
 phonenumbers==8.13.14
 django-smtp-ssl==1.0
+django-glrm==1.1.3

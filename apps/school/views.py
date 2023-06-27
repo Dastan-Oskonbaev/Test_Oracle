@@ -27,7 +27,7 @@ class TeacherRegistrationView(SuccessMessageMixin, CreateView):
     success_message = 'Вы успешно зарегестрированы!'
 
 
-class TeacherLogoutView(LogoutView):
+class TeacherLogoutView(SuccessMessageMixin, LogoutView):
     success_url = reverse_lazy('index')
     success_message = 'Вы успешно вышли!'
 
@@ -64,15 +64,14 @@ def student_create(request):
         form = StudentForm(request.POST, request.FILES)
         if form.is_valid():
             student = form.save()
-            # Отправка email уведомления
             send_mail(
                 'Вы создали нового ученика',
-                'Поздравляем, вы создали нового ученика.',
+                'Поздравляем, вы добавлены в базу данных школы!',
                 'dastiw1910@gmail.com',
                 [student.email],
                 fail_silently=False,
             )
-            return redirect('index')
+            return redirect('school')
     else:
         form = StudentForm()
     return render(request, 'school/student_form.html', {'form': form})
@@ -85,10 +84,10 @@ def student_update(request, pk):
         form = StudentForm(request.POST, instance=student)
         if form.is_valid():
             student = form.save()
-            return redirect('student_detail', pk=student.pk)
+            return redirect('school')
     else:
         form = StudentForm(instance=student)
-    return render(request, 'student_form.html', {'form': form})
+    return render(request, 'school/student_update_form.html', {'form': form})
 
 
 @login_required

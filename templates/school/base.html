@@ -31,36 +31,46 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'school' %}">Список Учеников </a>
-                      <a href="{% url 'student_create' %}">Добавить ученика</a>
-                </li>
-{% if user.is_authenticated %}
-                <form class="d-flex">
-            </form>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item" href="#">Профиль</a>
+                    <ul class="navbar-nav flex-row">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'school' %}">Список учеников</a>
                         </li>
-                        <li><a class="dropdown-item" href="#">Админ-панель</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_create' %}">Добавить ученика</a>
                         </li>
-                        <li>
-                            <a class="dropdown-item" href="{% url 'logout' %}"> Выйти </a>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'index' %}">Главная</a>
                         </li>
                     </ul>
                 </li>
-{% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
-                </li>
-{% endif %}
-
+                {% if user.is_authenticated %}
+                    <form class="d-flex">
+                    </form>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item" href="#"></a>
+                            </li>
+                            <li><a class="dropdown-item" href="#"></a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>

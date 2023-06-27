@@ -1,0 +1,40 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="{% static 'vendor/css/product-detail.css' %}" rel="stylesheet">
+<style>
+    form {
+        margin-top: 100px;
+    }
+
+    .current-data {
+        margin-top: 50px;
+        font-size: 18px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1>Форма ученика kkkkk</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+{% if student %}
+<div class="current-data">
+<h2>Текущие данные ученика:</h2>
+<p>ФИО: {{ student.full_name }}</p>
+<p>Email: {{ student.email }}</p>
+<p>Дата рождения: {{ student.date_of_birth }}</p>
+<p>Адрес: {{ student.address }}</p>
+<p>Пол: {{ student.gender }}</p>
+{% if student.photo %}
+<img src="{{ student.photo.url }}" alt="{{ student.full_name }}" style="max-width: 300px;">
+{% endif %}
+</div>
+{% endif %}
+{% endblock %}
+

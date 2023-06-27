@@ -20,7 +20,7 @@ class School(models.Model):
 
 
 class Teacher(AbstractUser):
-    phone_number = PhoneNumberField(
+    phone_number = models.CharField(
         _('phone number'),
         max_length=20,
         unique=True
@@ -31,7 +31,7 @@ class Teacher(AbstractUser):
     )
 
     USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.username
