@@ -12,7 +12,6 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-     <link href="{% static 'vendor/css/send-email.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     {% block css %} {% endblock %}
@@ -35,11 +34,13 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'school' %}">Список учеников</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student_create' %}">Добавить ученика</a>
-                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'index' %}">Главная</a>
+                        </li>
+                         {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_create' %}">Добавить ученика</a>
                         </li>
                         <li class="nav-item">
                              <form method="GET" action="{% url 'student_search' %}">
@@ -49,7 +50,7 @@
                         </li>
                     </ul>
                 </li>
-                {% if user.is_authenticated %}
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,7 +60,7 @@
                             <li>
                                 <a class="dropdown-item" href="#"></a>
                             </li>
-                            <li><a class="dropdown-item" href="#"></a></li>
+                            <li><a class="dropdown-item" href="{% url 'send_email' %}">Отправить сообщение</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -68,6 +69,7 @@
                             </li>
                         </ul>
                     </li>
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Войти <i class="fas fa-sign-in-alt"></i></a>

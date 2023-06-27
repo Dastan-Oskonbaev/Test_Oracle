@@ -13,7 +13,7 @@
 
 {% block content %}
     <div class="container form-container">
-        <h1>Форма ученика</h1>
+        <h1>Форма ученика </h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}

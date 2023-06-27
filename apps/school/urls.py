@@ -3,7 +3,7 @@ from django.urls import path
 from . import views
 from global_login_required import login_not_required
 from .views import TeacherRegistrationView, TeacherLogoutView, StudentDetailView, IndexView, \
-    SchoolView, TeacherLoginView, send_email_to_students
+    SchoolView, TeacherLoginView, send_email
 
 urlpatterns = [
     path("", IndexView.as_view(), name='index'),
@@ -16,6 +16,6 @@ urlpatterns = [
     path('students/<int:pk>/update/', views.student_update, name='student_update'),
     path('students/<int:pk>/delete/', views.student_delete, name='student_delete'),
     path('students/search/', views.student_search, name='student_search'),
-    path('send-email/', send_email_to_students, name='send_email'),
+    path('send-email/', send_email, name='send_email'),
 
 ]

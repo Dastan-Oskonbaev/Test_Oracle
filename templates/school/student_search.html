@@ -38,12 +38,18 @@
                     <h5>Класс: {{ student.grade }}</h5>
                     <p class="card-text">Адрес проживания: {{ student.address }}</p>
                 </div>
-                <form method="POST" action="{% url 'student_delete' student.id %}">
-                    {% csrf_token %}
-                    {% if user.is_authenticated %}
-                    <button type="submit" class="btn btn-primary">{{ _('Удалить') }}</button>
-                    {% endif %}
-                </form>
+                {% if user.is_authenticated %}
+                <div class="btn-group" role="group">
+                    <form method="POST" action="{% url 'student_delete' student.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">{{ _('Удалить') }}</button>
+                    </form>
+                    <form method="POST" action="{% url 'student_update' student.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">{{ _('Редактировать') }}</button>
+                    </form>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endfor %}

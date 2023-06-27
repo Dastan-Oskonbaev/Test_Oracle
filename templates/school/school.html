@@ -53,9 +53,7 @@
                         </div>
                         <form method="POST" action="{% url 'student_delete' student.id %}">
                             {% csrf_token %}
-                            {% if user.is_authenticated %}
-                                <button type="submit" class="btn btn-primary">{{ _('Удалить') }}</button>
-                            {% endif %}
+
                         </form>
                     </div>
                 </div>

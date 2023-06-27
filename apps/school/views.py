@@ -66,9 +66,9 @@ def student_create(request):
         if form.is_valid():
             student = form.save()
             send_mail(
-                'Вы создали нового ученика',
+                'Вы добавлены в базу данных школы!',
                 'Поздравляем, вы добавлены в базу данных школы!',
-                'example@gmail.com',
+                'dastiw1910@gmail.com',
                 [student.email],
                 fail_silently=False,
             )
@@ -109,7 +109,7 @@ def student_search(request):
 
 
 @login_required
-def send_email_to_students(request):
+def send_email(request):
     if request.method == 'POST':
         subject = request.POST.get('subject')
         message = request.POST.get('message')
@@ -127,4 +127,4 @@ def send_email_to_students(request):
         messages.success(request, 'Сообщение успешно отправлено ученикам.')
         return redirect('send_email')
 
-    return render(request, 'send_email.html')
+    return render(request, 'school/send_email.html')
