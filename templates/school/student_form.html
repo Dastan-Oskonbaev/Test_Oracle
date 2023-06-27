@@ -1,0 +1,25 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block css %}
+ <!-- Custom styles for this template -->
+    <link href="{% static 'vendor/css/product-detail.css' %}" rel="stylesheet">
+<html>
+<head>
+    <title>Форма ученика</title>
+  <style>
+        form {
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Форма ученика</h1>
+    <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+</body>
+</html>
+{% endblock %}

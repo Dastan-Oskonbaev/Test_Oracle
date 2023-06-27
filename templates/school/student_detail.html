@@ -1,0 +1,75 @@
+{% extends 'school/base.html' %}
+{% load static %}
+
+{% block css %}
+ <!-- Custom styles for this template -->
+    <link href="{% static 'vendor/css/product-detail.css' %}" rel="stylesheet">
+<style>
+        .container {
+
+              display: flex;
+                flex-direction: colums;
+          }
+
+        .row {
+        width: 100%;
+            margin-top: 50px;
+
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- /.col-lg-3 -->
+
+        <div class="col-lg-9">
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-4 col-md-6 mb-4 d-flex justify-content-center" style="width: 100%">
+                    <div class="card h-100 w-100">
+<img src="{{ student.photo.url }}" class="img-fluid" alt="{{ student.full_name }}" style="object-fit: cover; height: 300px; width: 800px;">
+                        <div class="card-body text-center align-items-center" style="width: 100%">
+                            <h4 class="card-title">ФИО :{{ student.full_name }}</h4>
+                            <h5>Email : {{ student.email }}</h5>
+                            <h5>Пол : {{ student.gender }}</h5>
+                            <h5>Дата рождения : {{ student.date_of_birth }}</h5>
+                            <p class="card-text" style="font-size: 18px">Адрес проживания : {{ student.address }}</p>
+                        </div>
+                        </div>
+                    <form method="POST" action="{% url 'student_delete' student.id %}">
+                {% csrf_token %}
+                        {% if user.is_authenticated %}
+                    <button type="submit" class="btn btn-primary">{{ _('Удалить') }}</button>
+                    <button type="submit" class="btn btn-success">{{ _('Редактировать') }}</button>
+                        {% endif %}
+            </form>
+        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block footer %}
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">&copy; Dastan Oskonbaev 2023</p>
+    </div>
+    <!-- /.container -->
+</footer>
+{% endblock %}

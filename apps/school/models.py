@@ -5,6 +5,67 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+class School(models.Model):
+    name = models.CharField(
+        _('name'),
+        max_length=100
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('School')
+        verbose_name_plural = _('Schools')
+
+
+class Teacher(AbstractUser):
+    phone_number = PhoneNumberField(
+        _('phone number'),
+        max_length=20,
+        unique=True
+    )
+    subject = models.CharField(
+        _('subject'),
+        max_length=50
+    )
+
+    USERNAME_FIELD = 'phone_number'
+    REQUIRED_FIELDS = []
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name = _('Teacher')
+        verbose_name_plural = _('Teachers')
+
+
+class Grade(models.Model):
+    name = models.CharField(
+        _('name'),
+        max_length=50
+    )
+    teacher = models.ForeignKey(
+        Teacher,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_('teacher')
+    )
+    school = models.ForeignKey(
+        School,
+        on_delete=models.CASCADE
+    )
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('Grade')
+        verbose_name_plural = _('Grades')
+
+
 class Student(models.Model):
     full_name = models.CharField(
         _('full name'),
@@ -16,9 +77,10 @@ class Student(models.Model):
     date_of_birth = models.DateField(
         _('date of birth'),
     )
-    grade = models.CharField(
-        _('grade'),
-        max_length=20
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.SET_NULL,
+        null=True,
     )
     address = models.CharField(
         _('address'),
@@ -41,65 +103,3 @@ class Student(models.Model):
         verbose_name_plural = _('Students')
 
 
-class Teacher(AbstractUser):
-    phone_number = PhoneNumberField(
-        _('phone number'),
-        max_length=20,
-        unique=True
-    )
-    grade = models.CharField(
-        _('grade'),
-        max_length=20
-    )
-    subject = models.CharField(
-        _('subject'),
-        max_length=50
-    )
-
-    USERNAME_FIELD = 'phone_number'
-    REQUIRED_FIELDS = ['grade', 'subject']
-
-    def __str__(self):
-        return self.phone_number
-
-    class Meta:
-        verbose_name = _('Teacher')
-        verbose_name_plural = _('Teachers')
-
-
-class Grade(models.Model):
-    name = models.CharField(
-        _('name'),
-        max_length=50
-    )
-    teacher = models.ForeignKey(
-        Teacher,
-        on_delete=models.CASCADE
-    )
-    students = models.ManyToManyField(
-        Student
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _('Grade')
-        verbose_name_plural = _('Grades')
-
-
-class School(models.Model):
-    name = models.CharField(
-        _('name'),
-        max_length=100
-    )
-    classes = models.ManyToManyField(
-        Grade
-    )
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = _('School')
-        verbose_name_plural = _('Schools')

@@ -1,3 +1,101 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.core.mail import send_mail
 
-# Create your views here.
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic.edit import CreateView
+
+from .forms import TeacherRegistrationForm, TeacherLoginForm
+from .models import Teacher, Student
+from .forms import StudentForm
+
+
+class TeacherLoginView(LoginView):
+    template_name = 'school/login.html'
+    form_class = TeacherLoginForm
+    success_url = reverse_lazy('index')
+
+
+class TeacherRegistrationView(SuccessMessageMixin, CreateView):
+    model = Teacher
+    form_class = TeacherRegistrationForm
+    template_name = 'school/registration.html'
+    success_url = reverse_lazy('login')
+    success_message = 'Вы успешно зарегестрированы!'
+
+
+class TeacherLogoutView(LogoutView):
+    success_url = reverse_lazy('index')
+    success_message = 'Вы успешно вышли!'
+
+
+class IndexView(View):
+    def get(self, request):
+        context = {'title': 'School #1'}
+        return render(request, 'school/index.html', context)
+
+
+class SchoolView(View):
+    def get(self, request, grade_id=None):
+        students = Student.objects.filter(grade_id=grade_id) if grade_id else Student.objects.all()
+        context = {
+            'title': 'School #1',
+            'students': students,
+        }
+        return render(request, 'school/school.html', context)
+
+
+class StudentDetailView(View):
+    def get(self, request, student_id):
+        student = get_object_or_404(Student, id=student_id)
+        context = {
+            'title': f'{student.full_name} - School #1',
+            'student': student,
+        }
+        return render(request, 'school/student_detail.html', context)
+
+
+@login_required
+def student_create(request):
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            student = form.save()
+            # Отправка email уведомления
+            send_mail(
+                'Вы создали нового ученика',
+                'Поздравляем, вы создали нового ученика.',
+                'dastiw1910@gmail.com',
+                [student.email],
+                fail_silently=False,
+            )
+            return redirect('index')
+    else:
+        form = StudentForm()
+    return render(request, 'school/student_form.html', {'form': form})
+
+
+@login_required
+def student_update(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        form = StudentForm(request.POST, instance=student)
+        if form.is_valid():
+            student = form.save()
+            return redirect('student_detail', pk=student.pk)
+    else:
+        form = StudentForm(instance=student)
+    return render(request, 'student_form.html', {'form': form})
+
+
+@login_required
+def student_delete(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        student.delete()
+        return redirect('index')
+    return render(request, 'school/school.html', {'student': student})
+
