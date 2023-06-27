@@ -36,7 +36,7 @@ MY_APPS = [
 ]
 
 THIRD_PART_APPS = [
-
+    'phonenumber_field',
 ]
 
 INSTALLED_APPS = [
@@ -112,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'school.Teacher'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -145,6 +147,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PHONENUMBER_DEFAULT_REGION = 'KG'
+
 
 with contextlib.suppress(ImportError):
     from .local_settings import *
