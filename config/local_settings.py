@@ -6,7 +6,7 @@ SECRET_KEY = '1234'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
